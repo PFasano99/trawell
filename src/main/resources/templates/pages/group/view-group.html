@@ -5,18 +5,24 @@
 <html lang="en">
 
   <head>
-      <title><!-- Nome gruppo---></title>
+      <title th:text = "${group.name}"></title>
       <meta charset="utf-8">
+
+      <script src="../js/removeGroupMemb.js"></script>
+      <script src="../js/addMemb.js"></script>
   </head>
 
   <body>
     <section layout:fragment="content">
         <div class="container h-100">
             <div class="row h-100 justify-content-center align-items-center">
-                <div class = "col-3">
+                <div class = "col-6">
                     <!-- Lista utenti dove potrai rimuovere se admin del gruppo (il remove deve essere cambiato con un simboletto)-->
-                    <ul class = "list-group" th:each = "user : ${participants}">
-                        <li class = "list-group-item" th:text = ${user.username}><span th:if = "${session.user.id} == ${group.idOwner}">Remove</span>></li>
+                    <div th:id=${group.id} class = "list-group">
+                        <div class="row groupMemb" th:each = "u : ${participants}" th:if ="${session.user.id != u.id}" >
+                            <li  class = "list-group-item" th:text = ${u.username}> </li>
+                            <button th:if = "${session.user.id == group.idOwner}" th:id = ${u.id} class="btn btn-primary remove"><span class="fas fa-user-minus"></span></button>
+                        </div>                                                           
                     </ul>
                 </div>
                 <div class = "col-12">
@@ -31,13 +37,11 @@
                         <button th:id = ${post.id} class="btn btn-primary report">Segnala Post</button>
                       </div>
                 </div>
-                <div class = "col-3">
+                <div class = "col-6 ">
                     <!-- Modal che chiede di inserire nuovo utente... visualizzabile solo se l'utente è il creatore del gruppo-->
                     <div th:if = "${session.user.id == group.idOwner}"class = "card">
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-                            Inserisci nuovo utente
-                        </button>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Add new member</button>
                         
                         <!-- Modal -->
                         <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -52,11 +56,11 @@
                                 <!--qui chiede lo username della persona che vuole aggiungere-->
                                 <form>
                                     <div class="modal-body">
-                                        <input type = "text" name = "username" placeholder="username of user you want to include...">
+                                        <input id="name" type = "text" name = "username" placeholder="username of user you want to include...">
                                     </div>
                                     <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                    <button type="button" class="btn btn-primary addMemb" th:id = ${group.id}>Save changes</button>
                                     </div>
                                 </form>
                             </div>

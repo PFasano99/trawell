@@ -1,6 +1,7 @@
 package com.trawell.controllers;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -51,7 +52,7 @@ public class RestGroupController {
     }
     
     @PostMapping(value="/group/addMember", consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<TrawellGroup> addMember(@RequestParam (required = true, name = "idUser") Long idUser, @RequestParam (required = true, name = "idGroup") Long idGroup, HttpSession session) {
+    public ResponseEntity<TrawellGroup> addMember(@PathVariable (required = true, name = "idUser") Long idUser, @PathVariable (required = true, name = "idGroup") Long idGroup, HttpSession session) {
         User user = (User) session.getAttribute("user");
         TrawellGroup updatedGroup = null;
 
@@ -69,9 +70,9 @@ public class RestGroupController {
 
         return updatedGroup == null ? new ResponseEntity<TrawellGroup>(HttpStatus.INTERNAL_SERVER_ERROR) : new ResponseEntity<TrawellGroup>(HttpStatus.OK);
     }
-    
-    @PostMapping(value="/group/removeMember", consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<TrawellGroup> removeMember(@RequestParam (required = true, name = "idUser") Long idUser, @RequestParam (required = true, name = "idGroup") Long idGroup, HttpSession session) {
+
+    @PostMapping(value="/group/removeMember/{idGroup}/{idUser}", consumes = MediaType.ALL_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<TrawellGroup> removeMember(@PathVariable (required = true, name = "idUser") Long idUser, @PathVariable (required = true, name = "idGroup") Long idGroup, HttpSession session) {
         User user = (User) session.getAttribute("user");
         TrawellGroup updatedGroup = null;
 
@@ -101,4 +102,6 @@ public class RestGroupController {
 
         return  new ResponseEntity<TrawellGroup>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+   
 }

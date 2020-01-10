@@ -59,8 +59,8 @@ public class RestPostController {
         {
             if(user.getId() == postOwner.getId())
             {
-                System.out.println(user.getId());
-                System.out.println(postOwner.getId());
+                //System.out.println(user.getId());
+                //System.out.println(postOwner.getId());
                 dao.delete(id);
 
                 return new ResponseEntity<Post>(HttpStatus.OK);

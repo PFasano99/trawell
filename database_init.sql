@@ -243,9 +243,8 @@ DROP TABLE IF EXISTS `trawell`.`groupmember` ;
 CREATE TABLE IF NOT EXISTS `trawell`.`groupmember` (
   `id_user` INT NOT NULL,
   `id_group` INT NOT NULL,
+   PRIMARY KEY (`id_user`, `id_group`),
 
-  PRIMARY KEY (`id_user`, `id_group`),
-  
     FOREIGN KEY (`id_group`)
     REFERENCES `trawell`.`trawell_group` (`id`)
     ON DELETE CASCADE
